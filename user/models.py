@@ -41,6 +41,8 @@ class UserManager(BaseUserManager):
 class Customer(AbstractUser):
     username = None
     email = models.EmailField(_("email address"), unique=True)
+    first_name = models.CharField(max_length=63)
+    last_name = models.CharField(max_length=63)
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ["first_name", "last_name"]
