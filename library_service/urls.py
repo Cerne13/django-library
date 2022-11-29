@@ -21,4 +21,6 @@ urlpatterns = [
     path("api-auth/", include("rest_framework.urls")),
     path("__debug__/", include("debug_toolbar.urls")),
     path("api/borrowings/", include("borrowings.urls", namespace="borrowings")),
+    path("api/books/", include("books.urls", namespace="books")),
+    path("api/user/", include("user.urls", namespace="user")),
 ]
