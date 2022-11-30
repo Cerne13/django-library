@@ -3,4 +3,4 @@ Default address and port:
 
 Created superuser:
 - email: admin@email.com
-- pass: 123098asd
+- pass: 123098qwe
