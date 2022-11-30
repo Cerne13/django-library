@@ -7,7 +7,6 @@ from borrowings.models import Borrowing
 
 
 class BorrowingSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Borrowing
         fields = [
@@ -16,8 +15,7 @@ class BorrowingSerializer(serializers.ModelSerializer):
             "expected_return_date",
             "actual_return_date",
             "book",
-            "user"
-
+            "user",
         ]
         read_only_fields = [
             "id",
@@ -57,8 +55,4 @@ class BorrowingSerializer(serializers.ModelSerializer):
 class BorrowingReturnSerializer(serializers.ModelSerializer):
     class Meta:
         model = Borrowing
-        fields = [
-            "id",
-            "user"
-
-        ]
+        fields = ["id", "user"]

@@ -9,17 +9,18 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
-from books.models import Book
 from borrowings.models import Borrowing
-from borrowings.serializers import BorrowingSerializer, BorrowingReturnSerializer
+from borrowings.serializers import (
+    BorrowingSerializer,
+    BorrowingReturnSerializer
+)
 
 
 class BorrowingsViewSet(
     GenericViewSet,
     mixins.CreateModelMixin,
     mixins.ListModelMixin,
-    mixins.RetrieveModelMixin
-
+    mixins.RetrieveModelMixin,
 ):
     queryset = Borrowing.objects.all()
     serializer_class = BorrowingSerializer
@@ -63,4 +64,6 @@ class BorrowingsViewSet(
 
             return Response(status=status.HTTP_200_OK)
 
-        return Response(f"message:This borrow is closed at {borrowing.actual_return_date}")
+        return Response(
+            f"message:This borrow is closed at {borrowing.actual_return_date}"
+        )
