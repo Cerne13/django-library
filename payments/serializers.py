@@ -14,13 +14,4 @@ class PaymentSerializer(serializers.ModelSerializer):
             "session_id",
             "amount",
         )
-
-
-class PaymentListSerializer(PaymentSerializer):
-    class Meta(PaymentSerializer.Meta):
-        fields = PaymentSerializer.Meta.fields
-
-
-class PaymentDetailSerializer(PaymentSerializer):
-    class Meta(PaymentSerializer.Meta):
-        fields = PaymentSerializer.Meta.fields
+        read_only_fields = ("id", "amount")
