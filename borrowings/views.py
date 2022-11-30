@@ -1,9 +1,6 @@
 import datetime
 
-from django.core.exceptions import ValidationError
 from django.db import transaction
-from django.http import HttpResponse
-from django.shortcuts import render
 from rest_framework import viewsets, mixins, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -45,6 +42,7 @@ class BorrowingsViewSet(
 
         if self.action == "return_":
             return BorrowingReturnSerializer
+
         return self.serializer_class
 
     @transaction.atomic
