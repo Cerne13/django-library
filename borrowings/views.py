@@ -6,6 +6,11 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
+import telegram
+
+from django.conf import settings
+from django.template.loader import render_to_string
+
 from borrowings.models import Borrowing
 from borrowings.serializers import (
     BorrowingSerializer,
@@ -65,3 +70,12 @@ class BorrowingsViewSet(
         return Response(
             f"message:This borrow is closed at {borrowing.actual_return_date}"
         )
+
+def post_borrowing_on_telegram(borrowing):
+    message_html = render_to_string('telegram_message.html', {
+        'borrowing': borrowing
+    })
+    telegram_settings = settings.TELEGRAM
+    bot = telegram.Bot(token=telegram_settings['bot_token'])
+    bot.send_message(chat_id="@%s" % telegram_settings['chat_name'],
+                     text=message_html, parse_mode=telegram.ParseMode.HTML)
