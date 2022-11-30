@@ -30,14 +30,14 @@ class BorrowingSerializer(serializers.ModelSerializer):
         book_inventory = data["book"].inventory
         if not book_inventory:
             raise serializers.ValidationError(
-                f"{data['book'].title} is end"
+                f"No more {data['book'].title} in stock"
             )
 
     @staticmethod
     def validate_date(data):
         if datetime.date.today() > data["expected_return_date"]:
             raise serializers.ValidationError(
-                "You must select correct return date"
+                "You must select a correct return date"
             )
 
     def validate(self, attrs):
