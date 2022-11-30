@@ -1,18 +1,14 @@
 import datetime
 
-from django.core.exceptions import ValidationError
 from django.db import transaction
-from django.http import HttpResponse
-from django.shortcuts import render
 from rest_framework import viewsets, mixins, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
-from books.models import Book
 from borrowings.models import Borrowing
 from borrowings.serializers import BorrowingSerializer, BorrowingReturnSerializer
-import telegram # this is from python-telegram-bot package
+import telegram
 
 from django.conf import settings
 from django.template.loader import render_to_string
@@ -22,8 +18,7 @@ class BorrowingsViewSet(
     GenericViewSet,
     mixins.CreateModelMixin,
     mixins.ListModelMixin,
-    mixins.RetrieveModelMixin
-
+    mixins.RetrieveModelMixin,
 ):
     queryset = Borrowing.objects.all()
     serializer_class = BorrowingSerializer
@@ -48,6 +43,7 @@ class BorrowingsViewSet(
 
         if self.action == "return_":
             return BorrowingReturnSerializer
+
         return self.serializer_class
 
     @transaction.atomic
@@ -70,7 +66,7 @@ class BorrowingsViewSet(
 
         return Response(f"message:This borrow is closed at {borrowing.actual_return_date}")
 
-# need to find a proper place for calling of this function
+
 def post_borrowing_on_telegram(borrowing):
     message_html = render_to_string('telegram_message.html', {
         'borrowing': borrowing

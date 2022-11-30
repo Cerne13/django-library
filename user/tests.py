@@ -41,11 +41,9 @@ class PublicUserApiTests(TestCase):
             "password": "nope!",
         }
         res = self.client.post(CREATE_USER_URL, payload)
-        user_created = (
-            get_user_model()
-            .objects.filter(email=payload["email"])
-            .exists()
-        )
+        user_created = get_user_model().objects.filter(
+            email=payload["email"]
+        ).exists()
 
         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertFalse(user_created)
@@ -63,10 +61,9 @@ class PublicUserApiTests(TestCase):
         self.assertIn("access", res.data)
 
     def test_create_token_wo_email_or_pass_fail(self):
-        res = self.client.post(TOKEN_PAIR_URL, {
-            "email": "test@test.com",
-            "password": ""
-        })
+        res = self.client.post(
+            TOKEN_PAIR_URL, {"email": "test@test.com", "password": ""}
+        )
 
         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertNotIn("token", res.data)
@@ -108,7 +105,7 @@ class PrivateUserApiTests(TestCase):
             "email": "test@test.com",
             "password": "science_fiction_rules:)",
             "first_name": "Robert",
-            "last_name": "Sheckley"
+            "last_name": "Sheckley",
         }
         res = self.client.patch(USER_MANAGE_URL, payload)
 
@@ -119,4 +116,3 @@ class PrivateUserApiTests(TestCase):
         self.assertTrue(self.user.check_password(payload["password"]))
         self.assertEqual(self.user.first_name, payload["first_name"])
         self.assertEqual(self.user.last_name, payload["last_name"])
-

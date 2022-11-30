@@ -56,5 +56,3 @@ env.bak/
 venv.bak/
 
 .idea/
-migrations
-
