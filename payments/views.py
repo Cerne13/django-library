@@ -17,3 +17,8 @@ class PaymentViewSet(
     serializer_class = PaymentSerializer
     permission_classes = (IsAuthenticated,)
 
+    def get_queryset(self):
+        queryset = self.get_queryset()
+        if self.request.user.is_staff:
+            return queryset
+        return queryset.filter(borrowing_id__user_id=self.request.user)
