@@ -4,6 +4,21 @@ from rest_framework import serializers
 
 from borrowings.models import Borrowing
 
+import telegram
+
+from django.conf import settings
+from django.template.loader import render_to_string
+
+
+def post_borrowing_on_telegram(borrowing):
+    message_html = render_to_string('telegram_message.html', {
+        'borrowing': borrowing
+    })
+    telegram_settings = settings.TELEGRAM
+    bot = telegram.Bot(token=telegram_settings['bot_token'])
+    bot.send_message(chat_id="@%s" % telegram_settings['chat_name'],
+                     text=message_html, parse_mode=telegram.ParseMode.HTML)
+
 
 class BorrowingSerializer(serializers.ModelSerializer):
 
@@ -49,7 +64,10 @@ class BorrowingSerializer(serializers.ModelSerializer):
         validated_data["book"].inventory -= 1
         validated_data["book"].save()
 
-        return Borrowing.objects.create(**validated_data)
+        borrowing = Borrowing.objects.create(**validated_data)
+        post_borrowing_on_telegram(borrowing)
+
+        return borrowing
 
 
 class BorrowingReturnSerializer(serializers.ModelSerializer):
