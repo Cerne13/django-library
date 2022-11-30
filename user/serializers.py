@@ -7,6 +7,8 @@ class CustomerSerializer(serializers.ModelSerializer):
         model = get_user_model()
         fields = (
             "id",
+            "first_name",
+            "last_name",
             "email",
             "password",
             "is_staff"
