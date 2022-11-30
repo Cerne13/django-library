@@ -2,6 +2,7 @@ from decimal import Decimal
 
 from django.core.validators import MinValueValidator
 from django.db import models
+from borrowings.models import Borrowing
 
 
 class Payment(models.Model):
@@ -15,7 +16,7 @@ class Payment(models.Model):
             ("PAYMENT", "PAYMENT"), ("FINE", "FINE")
         ), default="PAYMENT"
     )
-    borrowing_id = models.CharField(max_length=200) # OneToOne field to Borrowing
+    borrowing_id = models.ForeignKey(Borrowing, on_delete=models.CASCADE)
     session_url = models.CharField(max_length=200)
     session_id = models.CharField(max_length=50)
     amount = models.DecimalField(
