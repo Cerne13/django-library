@@ -1,16 +1,13 @@
 import datetime
 
 from django.db import transaction
-from rest_framework import viewsets, mixins, status
+from rest_framework import mixins, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
 from borrowings.models import Borrowing
-from borrowings.serializers import (
-    BorrowingSerializer,
-    BorrowingReturnSerializer
-)
+from borrowings.serializers import BorrowingSerializer, BorrowingReturnSerializer
 
 
 class BorrowingsViewSet(
@@ -53,6 +50,7 @@ class BorrowingsViewSet(
     )
     def return_(self, request, pk=None):
         borrowing = Borrowing.objects.get(pk=pk)
+
         if not borrowing.actual_return_date:
             borrowing.actual_return_date = datetime.date.today()
             borrowing.save()
@@ -62,6 +60,4 @@ class BorrowingsViewSet(
 
             return Response(status=status.HTTP_200_OK)
 
-        return Response(
-            f"message:This borrow is closed at {borrowing.actual_return_date}"
-        )
+        return Response(f"message:This borrow is closed at {borrowing.actual_return_date}")
