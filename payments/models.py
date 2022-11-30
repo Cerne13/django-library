@@ -1,3 +1,6 @@
+from decimal import Decimal
+
+from django.core.validators import MinValueValidator
 from django.db import models
 
 
@@ -12,10 +15,14 @@ class Payment(models.Model):
             ("PAYMENT", "PAYMENT"), ("FINE", "FINE")
         ), default="PAYMENT"
     )
-    borrowing_id = models.AutoField(primary_key=True)
+    borrowing_id = models.CharField(max_length=200) # OneToOne field to Borrowing
     session_url = models.CharField(max_length=200)
     session_id = models.CharField(max_length=50)
-    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    amount = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        validators=[MinValueValidator(Decimal("0.01"))]
+    )
 
     def __str__(self):
         return self.status
