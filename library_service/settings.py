@@ -139,3 +139,8 @@ SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(days=1),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
 }
+
+TELEGRAM = {
+    'bot_token': '5804794321:AAGzNxDDs-Lq9xR5BSy71mzIkLLtc4pBTms',
+    'chat_name': 'bor_not',
+}

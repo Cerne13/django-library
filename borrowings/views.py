@@ -12,6 +12,10 @@ from rest_framework.viewsets import GenericViewSet
 from books.models import Book
 from borrowings.models import Borrowing
 from borrowings.serializers import BorrowingSerializer, BorrowingReturnSerializer
+import telegram # this is from python-telegram-bot package
+
+from django.conf import settings
+from django.template.loader import render_to_string
 
 
 class BorrowingsViewSet(
@@ -54,6 +58,7 @@ class BorrowingsViewSet(
     )
     def return_(self, request, pk=None):
         borrowing = Borrowing.objects.get(pk=pk)
+
         if not borrowing.actual_return_date:
             borrowing.actual_return_date = datetime.date.today()
             borrowing.save()
@@ -64,3 +69,13 @@ class BorrowingsViewSet(
             return Response(status=status.HTTP_200_OK)
 
         return Response(f"message:This borrow is closed at {borrowing.actual_return_date}")
+
+# need to find a proper place for calling of this function
+def post_borrowing_on_telegram(borrowing):
+    message_html = render_to_string('telegram_message.html', {
+        'borrowing': borrowing
+    })
+    telegram_settings = settings.TELEGRAM
+    bot = telegram.Bot(token=telegram_settings['bot_token'])
+    bot.send_message(chat_id="@%s" % telegram_settings['chat_name'],
+                     text=message_html, parse_mode=telegram.ParseMode.HTML)
