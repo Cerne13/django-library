@@ -3,6 +3,7 @@ import datetime
 from django.db import transaction
 from rest_framework import mixins, status
 from rest_framework.decorators import action
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
@@ -18,6 +19,7 @@ class BorrowingsViewSet(
 ):
     queryset = Borrowing.objects.all()
     serializer_class = BorrowingSerializer
+    permission_classes = (IsAuthenticated,)
 
     def get_queryset(self):
         is_active = self.request.query_params.get("is_active")
