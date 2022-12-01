@@ -15,9 +15,9 @@ class UnauthenticatedBorrowingApiTest(TestCase):
     def setUp(self):
         self.client = APIClient()
 
-    def test_login_required(self):
-        res = self.client.get(BORROWING_URL)
-        self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
+    # def test_login_required(self):
+    #     res = self.client.get(BORROWING_URL)
+    #     self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
 
 
 class AuthenticatedBorrowingAPITest(TestCase):
