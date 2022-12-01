@@ -6,6 +6,7 @@ https://docs.djangoproject.com/en/4.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
+import os
 from datetime import timedelta
 from pathlib import Path
 
@@ -138,7 +139,11 @@ SIMPLE_JWT = {
     "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
 }
 
+BOT_TOKEN = os.getenv("BOT_TOKEN")
+
+CHAT_NAME = os.getenv("CHAT_NAME")
+
 TELEGRAM = {
-    'bot_token': '5804794321:AAGzNxDDs-Lq9xR5BSy71mzIkLLtc4pBTms',
-    'chat_name': 'bor_not',
+    'bot_token': BOT_TOKEN,
+    'chat_name': CHAT_NAME,
 }
