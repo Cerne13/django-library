@@ -10,10 +10,14 @@ from django.conf import settings
 from django.template.loader import render_to_string
 
 
-def post_borrowing_on_telegram(borrowing):
-    message_html = render_to_string('telegram_message.html', {
-        'borrowing': borrowing
-    })
+def post_borrowing_on_telegram(borrowing=None, message_template=None):
+    if borrowing:
+        message_html = render_to_string(message_template, {
+            'borrowing': borrowing
+        })
+    else:
+        message_html = render_to_string(message_template)
+
     telegram_settings = settings.TELEGRAM
     bot = telegram.Bot(token=telegram_settings['bot_token'])
     bot.send_message(chat_id="@%s" % telegram_settings['chat_name'],
@@ -65,7 +69,7 @@ class BorrowingSerializer(serializers.ModelSerializer):
         validated_data["book"].save()
 
         borrowing = Borrowing.objects.create(**validated_data)
-        post_borrowing_on_telegram(borrowing)
+        post_borrowing_on_telegram(borrowing, message_template='telegram_new_borrowing.html')
 
         return borrowing
 
