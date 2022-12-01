@@ -9,9 +9,9 @@ class PaymentSerializer(serializers.ModelSerializer):
             "id",
             "status",
             "payment_type",
-            "borrowing_id",
+            "borrowing",
             "session_url",
             "session_id",
             "amount",
         )
-        read_only_fields = ("id", "amount")
+        read_only_fields = ("id", "amount", "session_url", "session_id")
