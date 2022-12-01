@@ -32,16 +32,6 @@ class Borrowing(models.Model):
                 check=Q(expected_return_date__gt=Now()),
                 name="check_expected_return_date",
             ),
-            CheckConstraint(
-                check=Q(expected_return_date__gte=F("borrow_date")),
-                name="check_expected_return_is_after_borrow",
-            ),
-            CheckConstraint(
-                check=Q(
-                    actual_return_date__gte=Now()
-                ),
-                name="check_return_date"
-            ),
         ]
 
     # To validate in admin panel also
